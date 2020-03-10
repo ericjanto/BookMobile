@@ -8,5 +8,6 @@ public class Main {
     public static void main(String[] args) {
         LibraryBrowser browser = new LibraryBrowser();
         browser.run();
+        System.out.println();
     }
 }
