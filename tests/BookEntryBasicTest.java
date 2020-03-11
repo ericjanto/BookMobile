@@ -1,10 +1,5 @@
 import org.junit.Test;
-
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.*;
 
 public class BookEntryBasicTest extends BookEntryTest {
 
@@ -76,6 +71,60 @@ public class BookEntryBasicTest extends BookEntryTest {
         assertEquals("Unexpected " + fieldName + " returned by getter.", expected, actual);
     }
 
+    // ------------------------- check error handling of constructor ---
+
+    @Test(expected = NullPointerException.class)
+    public void testTitleNullError() {
+        new BookEntry(null, DEFAULT_AUTHORS, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyTitleError() {
+        String title = "";
+        new BookEntry(title, DEFAULT_AUTHORS, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testAuthorsNullError() {
+        new BookEntry(DEFAULT_TITLE, null, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testAuthorsInstanceNullError() {
+        String[] authors = {"Harry Klein", "Angela Merkel", null};
+        new BookEntry(DEFAULT_TITLE, authors, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAuthorsEmptyError() {
+        String[] authors = {""};
+        new BookEntry(DEFAULT_TITLE, authors, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRatingBoundError() {
+        float rating = (float) -1.0;
+        new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, rating, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testISBNNullError() {
+        new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, DEFAULT_RATING, null, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testISBNEmptyError() {
+        String ISBN = "";
+        new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, DEFAULT_RATING, ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPagesBoundError() {
+        int pages = -1;
+        new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, DEFAULT_RATING, DEFAULT_ISBN, pages);
+    }
+
+
     // ------------------------- check equals and hash code --------
 
     private void checkEquality(BookEntry bookA, BookEntry bookB, String field, boolean expected) {
@@ -96,8 +145,8 @@ public class BookEntryBasicTest extends BookEntryTest {
         assertTrue("True return value expected for same book instance.", bookA.equals(bookA) && bookB.equals(bookB));
         assertEquals("Hashcode expected to be the same for same instance.", bookA.hashCode(), bookA.hashCode());
 
-        assertFalse("False return value expected if compared to different object type.", bookA.equals("test"));
-        assertFalse("False return value expected if compared to null.", bookA.equals(null));
+        assertNotEquals("False return value expected if compared to different object type.", "test", bookA);
+        assertNotEquals("False return value expected if compared to null.", null, bookA);
 
         checkEquality(bookA, bookB, TITLE_FIELD_NAME, true);
 
@@ -136,12 +185,11 @@ public class BookEntryBasicTest extends BookEntryTest {
 
     @Test
     public void testToStringReturnValue() {
-        String expectedResult = DEFAULT_TOSTRING_RESULT;
         String actualResult = testBook.toString();
 
         // ignore leading and trailing white spaces
         // and correct for potential Windows line endings
-        assertEquals("ToString result not as expected.", expectedResult.replaceAll("\r", "").trim(),
+        assertEquals("ToString result not as expected.", DEFAULT_TOSTRING_RESULT.replaceAll("\r", "").trim(),
                 actualResult.replaceAll("\r", "").trim());
     }
 }
