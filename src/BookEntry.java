@@ -59,7 +59,6 @@ public class BookEntry {
      * @param rating represents rating of a book.
      * @param ISBN represents ISBN of a book.
      * @param pages represents number of pages of a book.
-     * @throws NullPointerException if title or ISBN points to null.
      */
     private static void checkEntries(String title, String[] authors, float rating, String ISBN, int pages) {
         checkTitle(title);
@@ -71,6 +70,7 @@ public class BookEntry {
 
     /**
      * Checks validity of title.
+     *
      * @param title represents title of a book.
      * @throws NullPointerException if title points to null.
      * @throws IllegalArgumentException if title is empty.
@@ -78,7 +78,7 @@ public class BookEntry {
     private static void checkTitle(String title) {
         Objects.requireNonNull(title, "Given title must not be null.");
         if (title.equals("")) {
-            throw new IllegalArgumentException("Given title must not be empty (\"\").");
+            throw new IllegalArgumentException("Given title must not be empty.");
         }
     }
 
@@ -167,7 +167,6 @@ public class BookEntry {
 
     /**
      * Getter method for class field title.
-     *
      * @return title
      */
     public String getTitle() {
@@ -176,7 +175,6 @@ public class BookEntry {
 
     /**
      * Getter method for class field authors.
-     *
      * @return authors
      */
     public String[] getAuthors() {
@@ -185,7 +183,6 @@ public class BookEntry {
 
     /**
      * Getter method for class field rating.
-     *
      * @return rating.
      */
     public float getRating() {
@@ -194,7 +191,6 @@ public class BookEntry {
 
     /**
      * Getter method for class field ISBN.
-     *
      * @return ISBN.
      */
     public String getISBN() {
@@ -203,7 +199,6 @@ public class BookEntry {
 
     /**
      * Getter method for class field getPages.
-     *
      * @return pages.
      */
     public int getPages() {
@@ -212,7 +207,6 @@ public class BookEntry {
 
     /**
      * Provide string which displays information about a BookEntry instance.
-     *
      * @return requested string as specified above.
      */
     @Override
@@ -251,7 +245,6 @@ public class BookEntry {
 
     /**
      * Provide hashCode of THIS BookEntry instance.
-     *
      * @return integer with hashCode value.
      */
     @Override
