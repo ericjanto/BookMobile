@@ -59,26 +59,41 @@ public class BookEntry {
      * @param rating represents rating of a book.
      * @param ISBN represents ISBN of a book.
      * @param pages represents number of pages of a book.
-     * @throws NullPointerException if title or ISBN is null.
+     * @throws NullPointerException if title or ISBN points to null.
      */
     private static void checkEntries(String title, String[] authors, float rating, String ISBN, int pages) {
-        Objects.requireNonNull(title, "Given title must not be null.");
+        checkTitle(title);
         checkAuthors(authors);
         checkRating(rating);
-        Objects.requireNonNull(ISBN);
+        checkISBN(ISBN);
         checkPages(pages);
+    }
+
+    /**
+     * Checks validity of title.
+     * @param title represents title of a book.
+     * @throws NullPointerException if title points to null.
+     * @throws IllegalArgumentException if title is empty.
+     */
+    private static void checkTitle(String title) {
+        Objects.requireNonNull(title, "Given title must not be null.");
+        if (title.equals("")) {
+            throw new IllegalArgumentException("Given title must not be empty (\"\").");
+        }
     }
 
     /**
      * Checks validity of authors array. No instance must be null.
      *
      * @param authors represents author(s) of a book.
-     * @throws NullPointerException if an array instance is null.
+     * @throws NullPointerException if an array instance points to null.
      */
     private static void checkAuthors(String[] authors) {
         Objects.requireNonNull(authors, "Given array must not be null.");
         for(String s : authors) {
-            Objects.requireNonNull(s, "Given instance in String[] array must not be null.");
+            if (s.equals("")) {
+                throw new IllegalArgumentException("Given instance in String[] array must not be empty.");
+            }
         }
     }
 
@@ -94,6 +109,20 @@ public class BookEntry {
 
         if (rating < MIN_RATING || rating > MAX_RATING) {
             throw new IllegalArgumentException(errorMessage);
+        }
+    }
+
+    /**
+     * Check validity of ISBN.
+     *
+     * @param ISBN represents ISBN of a book.
+     * @throws NullPointerException if ISBN points to null.
+     * @throws IllegalArgumentException if ISBN is empty.
+     */
+    private static void checkISBN(String ISBN) {
+        Objects.requireNonNull(ISBN, "Given ISBN must not be null.");
+        if (ISBN.equals("")) {
+            throw new IllegalArgumentException("Given ISBN must not be empty.");
         }
     }
 

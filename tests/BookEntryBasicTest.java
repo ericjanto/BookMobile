@@ -76,6 +76,60 @@ public class BookEntryBasicTest extends BookEntryTest {
         assertEquals("Unexpected " + fieldName + " returned by getter.", expected, actual);
     }
 
+    // ------------------------- check error handling of constructor ---
+
+    @Test(expected = NullPointerException.class)
+    public void testTitleNullError() {
+        BookEntry testBook = new BookEntry(null, DEFAULT_AUTHORS, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testEmptyTitleError() {
+        String title = "";
+        BookEntry testBook = new BookEntry(title, DEFAULT_AUTHORS, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testAuthorsNullError() {
+        BookEntry testBook = new BookEntry(DEFAULT_TITLE, null, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testAuthorsInstanceNullError() {
+        String[] authors = {"Harry Klein", "Angela Merkel", null};
+        BookEntry testBook = new BookEntry(DEFAULT_TITLE, authors, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testAuthorsEmptyError() {
+        String[] authors = {""};
+        BookEntry testBook = new BookEntry(DEFAULT_TITLE, authors, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testRatingBoundError() {
+        float rating = (float) -1.0;
+        BookEntry testBook = new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, rating, DEFAULT_ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = NullPointerException.class)
+    public void testISBNNullError() {
+        BookEntry testBook = new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, DEFAULT_RATING, null, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testISBNEmptyError() {
+        String ISBN = "";
+        new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, DEFAULT_RATING, ISBN, DEFAULT_PAGES);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void testPagesBoundError() {
+        int pages = -1;
+        new BookEntry(DEFAULT_TITLE, DEFAULT_AUTHORS, DEFAULT_RATING, DEFAULT_ISBN, pages);
+    }
+
+
     // ------------------------- check equals and hash code --------
 
     private void checkEquality(BookEntry bookA, BookEntry bookB, String field, boolean expected) {
