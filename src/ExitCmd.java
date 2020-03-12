@@ -6,8 +6,8 @@ public class ExitCmd extends LibraryCommand {
     /**
      * Create an exit command.
      * 
-     * @param argumentInput argument input is expected to be blank
-     * @throws IllegalArgumentException if given arguments are invalid
+     * @param argumentInput argument input is expected to be blank.
+     * @throws IllegalArgumentException if given arguments are invalid.
      * @throws NullPointerException if the given argumentInput is null.
      */
     public ExitCmd(String argumentInput) {
