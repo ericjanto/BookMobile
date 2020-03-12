@@ -210,7 +210,7 @@ public class BookEntry {
      * @return requested string as specified above.
      */
     @Override
-    public String toString() {
+    public String toString() { // TODO use StringBuilder instead? -> Piazza
         return title +
                 "\nby " + authorsToString(authors) +
                 "\nRating: " + ratingToString(rating) +
