@@ -57,7 +57,6 @@ public class AddCmd extends LibraryCommand {
         } catch (Exception e) {
             return false;
         }
-
     }
 
     /**

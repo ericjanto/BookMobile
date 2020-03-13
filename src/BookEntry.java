@@ -77,7 +77,7 @@ public class BookEntry {
      */
     private static void checkTitle(String title) {
         Objects.requireNonNull(title, "Given title must not be null.");
-        if (title.equals("")) {
+        if (title.isBlank()) {
             throw new IllegalArgumentException("Given title must not be empty.");
         }
     }
@@ -91,7 +91,7 @@ public class BookEntry {
     private static void checkAuthors(String[] authors) {
         Objects.requireNonNull(authors, "Given array must not be null.");
         for(String s : authors) {
-            if (s.equals("")) {
+            if (s.isBlank()) {
                 throw new IllegalArgumentException("Given instance in String[] array must not be empty.");
             }
         }
@@ -121,7 +121,7 @@ public class BookEntry {
      */
     private static void checkISBN(String ISBN) {
         Objects.requireNonNull(ISBN, "Given ISBN must not be null.");
-        if (ISBN.equals("")) {
+        if (ISBN.isBlank()) {
             throw new IllegalArgumentException("Given ISBN must not be empty.");
         }
     }
@@ -210,7 +210,7 @@ public class BookEntry {
      * @return requested string as specified above.
      */
     @Override
-    public String toString() {
+    public String toString() { // TODO use StringBuilder instead? -> Piazza
         return title +
                 "\nby " + authorsToString(authors) +
                 "\nRating: " + ratingToString(rating) +
