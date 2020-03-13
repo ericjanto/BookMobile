@@ -11,7 +11,7 @@ public class AddCmd extends LibraryCommand {
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
     /** Sets valid file type for argument input. */
-    private static final String VALID_FILE_TYPE = "csv";
+    private static final String VALID_FILE_SUFFIX = ".csv";
 
     /** Saves parsed command argument as a string, enabling later use. */
     private static Path libraryFilePath;    //TODO Should this really be private final?
@@ -48,7 +48,7 @@ public class AddCmd extends LibraryCommand {
     protected boolean parseArguments(String argumentInput) {
         try {
             Path input = Paths.get(argumentInput);
-            if (Files.probeContentType(input).equals(VALID_FILE_TYPE)) {
+            if (input.toString().endsWith(VALID_FILE_SUFFIX)) {
                 libraryFilePath = input;
                 return true;
             } else {

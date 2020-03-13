@@ -1,8 +1,7 @@
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
 
 /** 
  * Class responsible for loading
@@ -65,10 +64,62 @@ public class LibraryFileLoader {
      * 
      * @return books parsed from the previously loaded book data or an empty list
      * if no book data has been loaded yet.
-     * @throws UnsupportedOperationException Not implemented yet!
      */
-    public List<BookEntry> parseFileContent() {
-        // TODO Remove exception and implement me
-        throw new UnsupportedOperationException("Parsing library files is not yet implemented.");
+    public List<BookEntry> parseFileContent() { // TODO Refactor
+        ArrayList<BookEntry> bookEntryList = new ArrayList<>();
+        if (fileContent != null) {
+
+            List<String> lineContent;
+
+            Iterator<String> contentIterator = fileContent.iterator();
+
+
+            while (contentIterator.hasNext()) {
+
+                lineContent = parseLineContent(contentIterator.next());
+
+                String title = lineContent.get(0);
+                String[] authors = new String[lineContent.size() - 5];
+
+                for(int i = 1; i < lineContent.size() - 4; i++) {
+                    authors[i-1] = lineContent.get(i);
+                }
+
+                float rating = Float.parseFloat(lineContent.get(lineContent.size() - 3));
+
+                String ISBN = lineContent.get(lineContent.size() - 2);
+
+                int pages = Integer.parseInt(lineContent.get(lineContent.size() - 1));
+
+                BookEntry parseFileEntry = new BookEntry(title, authors, rating, ISBN, pages);
+
+                bookEntryList.add(parseFileEntry);
+
+                return bookEntryList;
+
+            }
+
+
+        } else {
+            System.err.println("ERROR: No content loaded before parsing.");
+        }
+
+    return bookEntryList;
+
+    }
+
+    private static List<String> parseLineContent(String fileLine) { //TODO Refactor
+        List<String> parsedContent;
+        String[] temp;
+        String[] authors;
+
+        temp = fileLine.split(",");
+
+        authors = temp[1].split("-");
+
+        System.arraycopy(authors, 0, temp, 1, authors.length);
+
+        parsedContent = Arrays.asList(temp);
+        return parsedContent;
     }
 }
