@@ -29,7 +29,7 @@ public final class CommandFactory { // the final keyword prevents subclassing of
             switch(cmdType) {
                 /* TODO Implement individual commands and comment
                  * corresponding line back in once you have a class in place
-                 * Lastly, get rid of the unsupported Operation exception.
+                 * TODO Lastly, get rid of the unsupported Operation exception.
                  */
 
                 case HELP: return new HelpCmd(argumentInput);
