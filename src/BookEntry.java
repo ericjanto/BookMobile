@@ -91,6 +91,10 @@ public class BookEntry {
     private static void checkAuthors(String[] authors) {
         Objects.requireNonNull(authors, "Given array must not be null.");
         for(String s : authors) {
+            if (s == null) {
+                throw new NullPointerException("Given instance in String[] array must not be null.");
+            }
+
             if (s.isBlank()) {
                 throw new IllegalArgumentException("Given instance in String[] array must not be empty.");
             }

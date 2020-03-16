@@ -91,7 +91,7 @@ public class BookEntryBasicTest extends BookEntryTest {
 
     @Test(expected = NullPointerException.class)
     public void testAuthorsInstanceNullError() {
-        String[] authors = {"Harry Klein", "Angela Merkel", null};
+        String[] authors = {"Harry Klein", "Angela Merkel", null, "Hello", null};
         new BookEntry(DEFAULT_TITLE, authors, DEFAULT_RATING, DEFAULT_ISBN, DEFAULT_PAGES);
     }
 

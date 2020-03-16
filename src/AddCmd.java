@@ -1,4 +1,3 @@
-import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
@@ -14,7 +13,7 @@ public class AddCmd extends LibraryCommand {
     private static final String VALID_FILE_SUFFIX = ".csv";
 
     /** Saves parsed command argument as a string, enabling later use. */
-    private static Path libraryFilePath;    //TODO Should this really be private final?
+    private Path libraryFilePath;
 
     // -------------- CONSTRUCTOR(S) ------------------------------------------
 
@@ -27,10 +26,6 @@ public class AddCmd extends LibraryCommand {
      */
     public AddCmd(String argumentInput) {
         super(CommandType.ADD, argumentInput);
-    }
-
-    public AddCmd() {
-
     }
 
     // -------------- HELPER METHODS FOR CLASS FUNCTIONALITY METHODS ----------
@@ -55,6 +50,7 @@ public class AddCmd extends LibraryCommand {
                 return false;
             }
         } catch (Exception e) {
+            System.err.println("Invalid path to file: " + e);
             return false;
         }
     }
@@ -69,8 +65,6 @@ public class AddCmd extends LibraryCommand {
     @Override
     public void execute(LibraryData data) {
         Objects.requireNonNull(data);
-
-        LibraryData dataLoader = new LibraryData();
-        dataLoader.loadData(libraryFilePath);
+        data.loadData(libraryFilePath);
     }
 }
