@@ -28,8 +28,6 @@ public class AddCmd extends LibraryCommand {
         super(CommandType.ADD, argumentInput);
     }
 
-    // -------------- HELPER METHODS FOR CLASS FUNCTIONALITY METHODS ----------
-
     // -------------- CLASS FUNCTIONALITY METHODS -----------------------------
 
     /**
@@ -41,16 +39,11 @@ public class AddCmd extends LibraryCommand {
      */
     @Override
     protected boolean parseArguments(String argumentInput) {
-        try {
-            Path input = Paths.get(argumentInput);
-            if (input.toString().endsWith(VALID_FILE_SUFFIX)) {
-                libraryFilePath = input;
-                return true;
-            } else {
-                return false;
-            }
-        } catch (Exception e) {
-            System.err.println("Invalid path to file: " + e);
+        if (argumentInput.endsWith(VALID_FILE_SUFFIX)) {
+            libraryFilePath = Paths.get(argumentInput);
+            return true;
+        } else {
+            System.err.printf("ERROR: Invalid argument for ADD command: %s", argumentInput);
             return false;
         }
     }
@@ -64,7 +57,8 @@ public class AddCmd extends LibraryCommand {
      */
     @Override
     public void execute(LibraryData data) {
-        Objects.requireNonNull(data);
+        Objects.requireNonNull(data, "Provided library data for AddCmd execution must not be null.");
+
         data.loadData(libraryFilePath);
     }
 }

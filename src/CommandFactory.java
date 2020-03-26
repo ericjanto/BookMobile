@@ -34,16 +34,16 @@ public final class CommandFactory { // the final keyword prevents subclassing of
 
                 case HELP: return new HelpCmd(argumentInput);
                 case EXIT: return new ExitCmd(argumentInput);
-                case ADD: //return new AddCmd(argumentInput);
-                case LIST: //return new ListCmd(argumentInput);
-                case SEARCH: //return new SearchCmd(argumentInput);
-                case REMOVE: //return new RemoveCmd(argumentInput);
-                case GROUP: //return new GroupCmd(argumentInput);
+                case ADD: return new AddCmd(argumentInput);
+                case LIST: return new ListCmd(argumentInput);
+                case SEARCH: return new SearchCmd(argumentInput);
+                case REMOVE: return new RemoveCmd(argumentInput);
+                case GROUP: return new GroupCmd(argumentInput);
                 default:
                     throw new IllegalArgumentException("Command type not supported: " + cmdType);
             }
         } catch (IllegalArgumentException e) {
-            System.err.println("ERROR: " + e.getMessage());
+            System.err.println();
         }
 
         return null;

@@ -19,6 +19,7 @@ public class LibraryData {
 
     /** 
      * Get all available book entries.
+     *
      * @return available book entries
      */
     public List<BookEntry> getBookData() {
@@ -27,6 +28,7 @@ public class LibraryData {
 
     /**
      * Initiate book data loading for the given path.
+     *
      * @param libraryFile specified path to book data file
      * @return true if loading was successful, false otherwise
      * @throws NullPointerException if the given path is null

@@ -9,21 +9,12 @@ import java.util.*;
  */
 public class LibraryFileLoader {
 
+    // -------------- CONSTANTS AND FIELDS ------------------------------------
 
     /** Character used to separate data values in file. */
     private static final char dataSeparator = ',';
     /** Character used to separate author names. */
     private static final char authorSeparator = '-';
-    /** Index of title in file line. */
-    private static final int TITLE_INDEX = 0;
-    /** Index of authors in file line. */
-    private static final int AUTHORS_INDEX = 1;
-    /** Index of rating in file line. */
-    private static final int RATING_INDEX = 2;
-    /** Index of ISBN in file line. */
-    private static final int ISBN_INDEX = 3;
-    /** Index of page number in file line. */
-    private static final int PAGES_INDEX = 4;
 
     /**
      * Contains all lines read from a book data file using
@@ -37,10 +28,88 @@ public class LibraryFileLoader {
      */
     private List<String> fileContent;
 
+    // -------------- CONSTRUCTOR(S) ------------------------------------------
+
     /** Create a new loader. No file content has been loaded yet. */
     public LibraryFileLoader() { 
         fileContent = null;
     }
+
+    // -------------- HELPER METHODS FOR CLASS FUNCTIONALITY METHODS ----------
+
+    /**
+     * Has file content been loaded already?
+     *
+     * @return true if file content has been loaded already.
+     */
+    public boolean contentLoaded() {
+        return fileContent != null;
+    }
+
+    /**
+     * Separate data values within a file line.
+     *
+     * @param line file line to be parsed.
+     * @return list containing separated data values.
+     */
+    private ArrayList<String> separateLineContent(String line) {
+        return new ArrayList<>(Arrays.asList(line.split(dataSeparator + "")));
+    }
+
+    /**
+     * Get title from a file line.
+     *
+     * @param line file line.
+     * @return title.
+     */
+    private String getLineTitle(ArrayList<String> line) {
+        return line.get(DataOrder.TITLE.ordinal());
+    }
+
+    /**
+     * Get author(s) from a file line.
+     *
+     * @param line file line.
+     * @return author(s).
+     */
+    private String[] getLineAuthors(ArrayList<String> line) {
+        int authorIndex = DataOrder.AUTHORS.ordinal();
+        return line.get(authorIndex).split(authorSeparator + "");
+    }
+
+    /**
+     * Get rating from a file line.
+     *
+     * @param line file line.
+     * @return rating.
+     */
+    private float getLineRating(ArrayList<String> line) {
+        int ratingIndex = DataOrder.RATING.ordinal();
+        return Float.parseFloat(line.get(ratingIndex));
+    }
+
+    /**
+     * Get ISBN from a file line.
+     *
+     * @param line file line.
+     * @return ISBN.
+     */
+    private String getLineISBN(ArrayList<String> line) {
+        return line.get(DataOrder.ISBN.ordinal());
+    }
+
+    /**
+     * Get page number from a file line.
+     *
+     * @param line file line.
+     * @return page number.
+     */
+    private int getLinePages(ArrayList<String> line) {
+        int pagesIndex = DataOrder.PAGES.ordinal();
+        return Integer.parseInt(line.get(pagesIndex));
+    }
+
+    // -------------- CLASS FUNCTIONALITY METHODS -----------------------------
 
     /**
      * Load all lines from the specified book data file and
@@ -63,16 +132,7 @@ public class LibraryFileLoader {
         } catch (IOException | SecurityException e) {
             System.err.println("ERROR: Reading file content failed: " + e);
         }
-
         return success;
-    }
-
-    /**
-     * Has file content been loaded already?
-     * @return true if file content has been loaded already.
-     */
-    public boolean contentLoaded() {
-        return fileContent != null;
     }
 
     /**
@@ -81,21 +141,18 @@ public class LibraryFileLoader {
      * @return books parsed from the previously loaded book data or an empty list
      * if no book data has been loaded yet.
      */
-    public List<BookEntry> parseFileContent() { // TODO Refactor
+    public List<BookEntry> parseFileContent() {
         ArrayList<BookEntry> bookEntryList = new ArrayList<>();
 
-        if (fileContent == null) {
+        if (!contentLoaded()) {
             System.err.println("ERROR: No content loaded before parsing.");
         } else {
-            Iterator<String> fileContentIterator = fileContent.iterator();
+            Iterator<String> lineIterator = fileContent.iterator();
 
-            // Leave out header line in file
-            if (fileContentIterator.hasNext()) {
-                fileContentIterator.next();
-            }
+            lineIterator.next(); // Leave out header line in file
 
-            while (fileContentIterator.hasNext()) {
-                ArrayList<String> bookValues = separateLineContent(fileContentIterator.next());
+            while (lineIterator.hasNext()) {
+                ArrayList<String> bookValues = separateLineContent(lineIterator.next());
                 addBook(bookEntryList, bookValues);
             }
         }
@@ -103,39 +160,20 @@ public class LibraryFileLoader {
         return bookEntryList;
     }
 
-    private void addBook(ArrayList<BookEntry> destinationLibrary, ArrayList<String> lineContent) {
-        String title = getLineTitle(lineContent);
-        String[] authors = getLineAuthors(lineContent);
-        float rating = getLineRating(lineContent);
-        String ISBN = getLineISBN(lineContent);
-        int pages = getLinePages(lineContent);
+    /**
+     * Add a book to the provided library.
+     * Parses book data from a list.
+     *
+     * @param library library where the book will be added.
+     * @param bookValues list containing required book data values for a BookEntry.
+     */
+    private void addBook(ArrayList<BookEntry> library, ArrayList<String> bookValues) {
+        String title = getLineTitle(bookValues);
+        String[] authors = getLineAuthors(bookValues);
+        float rating = getLineRating(bookValues);
+        String ISBN = getLineISBN(bookValues);
+        int pages = getLinePages(bookValues);
 
-        destinationLibrary.add(new BookEntry(title, authors, rating, ISBN, pages));
+        library.add(new BookEntry(title, authors, rating, ISBN, pages));
     }
-
-    private ArrayList<String> separateLineContent(String line) {
-        return new ArrayList<>(Arrays.asList(line.split(dataSeparator + "")));
-    }
-
-    private String getLineTitle(ArrayList<String> line) {
-        return line.get(TITLE_INDEX);
-    }
-
-    private String[] getLineAuthors(ArrayList<String> line) {
-        return line.get(AUTHORS_INDEX).split(authorSeparator + "");
-    }
-
-    private float getLineRating(ArrayList<String> line) {
-        return Float.parseFloat(line.get(RATING_INDEX));
-    }
-
-    private String getLineISBN(ArrayList<String> line) {
-        return line.get(ISBN_INDEX);
-    }
-
-    private int getLinePages(ArrayList<String> line) {
-        return Integer.parseInt(line.get(PAGES_INDEX));
-    }
-
-
 }

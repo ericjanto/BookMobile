@@ -4,16 +4,16 @@ import java.util.Arrays;
 /**
  * Immutable class encapsulating data for a single book entry.
  */
-public class BookEntry {
+public final class BookEntry {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
     /** Minimum value of rating. */
-    private static final float MIN_RATING = (float) 1.0;
+    private static final float MIN_RATING = (float) 0.0;
     /** Maximum value of rating. */
     private static final float MAX_RATING = (float) 5.0;
     /** Minimum number of pages. */
-    private static final int MIN_PAGES = 1;
+    private static final int MIN_PAGES = 0;
 
     /** Title of a BookEntry instance. */
     private final String title;
@@ -32,11 +32,11 @@ public class BookEntry {
      * Constructor for BookEntry.java class.
      * Initialises class fields.
      *
-     * @param title represents title of a book.
-     * @param authors represents author(s) of a book.
-     * @param rating represents rating of a book.
-     * @param ISBN represents ISBN of a book.
-     * @param pages represents number of pages of a book.
+     * @param title title of the book.
+     * @param authors author(s) of the book.
+     * @param rating rating of the book.
+     * @param ISBN ISBN of the book.
+     * @param pages total number of pages of the book.
      */
     public BookEntry(String title, String[] authors, float rating, String ISBN, int pages) {
         checkEntries(title, authors, rating, ISBN, pages);
@@ -52,7 +52,6 @@ public class BookEntry {
 
     /**
      * Check the validity of its parameters.
-     * For the validity requirements look at the documentation of the helper methods used in this method.
      *
      * @param title represents title of a book.
      * @param authors represents author(s) of a book.
@@ -70,6 +69,7 @@ public class BookEntry {
 
     /**
      * Checks validity of title.
+     * Expected to be neither null nor empty.
      *
      * @param title represents title of a book.
      * @throws NullPointerException if title points to null.
@@ -77,26 +77,27 @@ public class BookEntry {
      */
     private static void checkTitle(String title) {
         Objects.requireNonNull(title, "Given title must not be null.");
+
         if (title.isBlank()) {
             throw new IllegalArgumentException("Given title must not be empty.");
         }
     }
 
     /**
-     * Checks validity of authors array. No instance must be null.
+     * Checks validity of authors array.
+     * No instance must be null or empty.
      *
      * @param authors represents author(s) of a book.
      * @throws NullPointerException if an array instance points to null.
      */
     private static void checkAuthors(String[] authors) {
-        Objects.requireNonNull(authors, "Given array must not be null.");
-        for(String s : authors) {
-            if (s == null) {
-                throw new NullPointerException("Given instance in String[] array must not be null.");
-            }
+        Objects.requireNonNull(authors, "Given author array must not be null.");
 
-            if (s.isBlank()) {
-                throw new IllegalArgumentException("Given instance in String[] array must not be empty.");
+        for (String author : authors) {
+            Objects.requireNonNull(author, "Given author instance in author array must not be null.");
+
+            if (author.isBlank()) {
+                throw new IllegalArgumentException("Given author instance in author array must not be empty.");
             }
         }
     }
@@ -118,6 +119,7 @@ public class BookEntry {
 
     /**
      * Check validity of ISBN.
+     * Expected to be neither null nor empty.
      *
      * @param ISBN represents ISBN of a book.
      * @throws NullPointerException if ISBN points to null.
@@ -125,6 +127,7 @@ public class BookEntry {
      */
     private static void checkISBN(String ISBN) {
         Objects.requireNonNull(ISBN, "Given ISBN must not be null.");
+
         if (ISBN.isBlank()) {
             throw new IllegalArgumentException("Given ISBN must not be empty.");
         }
@@ -148,7 +151,7 @@ public class BookEntry {
     // -------------- HELPER METHODS FOR CLASS FUNCTIONALITY METHODS ----------
 
     /**
-     * Provide string displaying author information.
+     * Provide string containing author information.
      *
      * @param authors represents a list of
      * @return string containing author information.
@@ -214,7 +217,8 @@ public class BookEntry {
      * @return requested string as specified above.
      */
     @Override
-    public String toString() { // TODO use StringBuilder instead? -> Piazza
+    public String toString() {
+        // Using a StringBuilder would be equally or less efficient.
         return title +
                 "\nby " + authorsToString(authors) +
                 "\nRating: " + ratingToString(rating) +
@@ -223,7 +227,7 @@ public class BookEntry {
     }
 
     /**
-     * Compare parameter to THIS BookEntry instance in terms of equality.
+     * Compare parameter object to this BookEntry instance in terms of equality.
      *
      * @param obj object to be this compared to.
      * @return true if @param obj is equal to THIS instance, otherwise false.
@@ -248,7 +252,7 @@ public class BookEntry {
     }
 
     /**
-     * Provide hashCode of THIS BookEntry instance.
+     * Provide hashCode of this BookEntry instance.
      * @return integer with hashCode value.
      */
     @Override
