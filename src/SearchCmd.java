@@ -28,6 +28,7 @@ public class SearchCmd extends LibraryCommand {
 
     /**
      * Check if given argument is valid search value.
+     * Is neither allowed to be blank nor to contain a whitespace.
      *
      * @param value string to be checked.
      * @return true if valid search value, otherwise false.
@@ -42,30 +43,40 @@ public class SearchCmd extends LibraryCommand {
      * @param book bookEntry to be checked.
      * @return true if valid book title, otherwise false.
      */
-    private boolean isValidTitle(BookEntry book) {
+    private boolean isWantedTitle(BookEntry book) {
         String bookTitle = book.getTitle().toLowerCase();
-
         return bookTitle.contains(searchValue.toLowerCase());
+    }
+
+    /**
+     * Find titles which contain search parameter.
+     *
+     * @param books library containing books.
+     * @return found titles.
+     */
+    private ArrayList<String> findTitles(List<BookEntry> books) {
+        ArrayList<String> foundTitles = new ArrayList<>();
+
+        for (BookEntry book : books) {
+            if (isWantedTitle(book)) {
+                foundTitles.add(book.getTitle());
+            }
+        }
+        return foundTitles;
     }
 
     /**
      * Prints all titles provided in parameter list. If empty list,
      * prints according message.
      *
-     * @param titles list containing book titles.
+     * @param foundTitles list containing book titles.
      */
-    private void printTitles(ArrayList<String> titles) {
-        if (titles.size() == 0) {
+    private void printTitles(ArrayList<String> foundTitles) {
+        if (foundTitles.isEmpty()) {
             System.out.println("No hits found for search term: " + searchValue);
         } else {
-            StringBuilder bd = new StringBuilder();
-
-            for (String title : titles) {
-                bd.append(title).append("\n");
-            }
-
-            bd.deleteCharAt(bd.length() - 1); // Remove last line break.
-            System.out.println(bd);
+            String list = String.join("\n", foundTitles);
+            System.out.println(list);
         }
     }
 
@@ -100,15 +111,7 @@ public class SearchCmd extends LibraryCommand {
     public void execute(LibraryData data) {
         Objects.requireNonNull(data, "Provided library data for SearchCmd must not be null.");
 
-        List<BookEntry> books = data.getBookData();
-        ArrayList<String> foundTitles = new ArrayList<>();
-
-        for (BookEntry book : books) {   // TODO find more effective algorithm? & extract to helper method
-            if (isValidTitle(book)) {
-                foundTitles.add(book.getTitle());
-            }
-        }
-
+        ArrayList<String> foundTitles = findTitles(data.getBookData());
         printTitles(foundTitles);
     }
 }

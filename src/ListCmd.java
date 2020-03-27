@@ -8,8 +8,10 @@ public class ListCmd extends LibraryCommand {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
-    /** Contains all valid input arguments for list command. Blank included. */
-    private static final String VALID_INPUT = "shortlong";
+    /** Specifies command argument for displaying a short list. */
+    private static final String shortListType = "short";
+    /** Specifies command argument for displaying a long list. */
+    private static final String longListType = "long";
 
     /** Type of list to display. */
     private String listType;
@@ -29,7 +31,7 @@ public class ListCmd extends LibraryCommand {
     // -------------- HELPER METHODS FOR CLASS FUNCTIONALITY METHODS ----------
 
     /**
-     * Print a book list header.
+     * Print a book list header according to book list size.
      *
      * @param data book data in library.
      * @return true if library contains books, otherwise false.
@@ -53,10 +55,14 @@ public class ListCmd extends LibraryCommand {
      */
     private void displayShort(LibraryData data) {
         List<BookEntry> books = data.getBookData();
+        StringBuilder shortList = new StringBuilder();
 
         for (BookEntry book : books) {
-            System.out.println(book.getTitle()); // TODO StringBuilder
+            shortList.append(book.getTitle());
+            shortList.append("\n");
         }
+
+        System.out.print(shortList);
     }
 
     /**
@@ -66,24 +72,29 @@ public class ListCmd extends LibraryCommand {
      */
     private void displayLong(LibraryData data) {
         List<BookEntry> books = data.getBookData();
+        StringBuilder longList = new StringBuilder();
 
         for (BookEntry book : books) {
-            System.out.println(book.toString() + "\n");
+            longList.append(book.toString());
+            longList.append("\n\n");
         }
+
+        System.out.print(longList);
     }
 
     // -------------- CLASS FUNCTIONALITY METHODS -----------------------------
 
     /**
      * Check for validity of input and remember it in class field if valid.
+     * Is expected to be either "short", "long", or blank.
      *
      * @param argumentInput argument input for this command.
-     *                      Is expected to be either "short", "long", or blank.
      * @return true if valid input, otherwise false.
      */
     @Override
     protected boolean parseArguments(String argumentInput) {
-        if (VALID_INPUT.contains(argumentInput)) {
+        if (shortListType.equals(argumentInput) || longListType.equals(argumentInput) ||
+                argumentInput.isBlank()) {
             listType = argumentInput;
             return true;
         } else {
@@ -102,16 +113,13 @@ public class ListCmd extends LibraryCommand {
     public void execute(LibraryData data) {
         Objects.requireNonNull(data, "Provided library data for ListCmd execution must not be null.");
 
-        // no additional error handling / default branch for unexpected listTypes needed since
-        // possible input errors are caught when constructing ListCmd
-
         if (listHeader(data)) {
             switch (listType) {
                 case "":
-                case "short":
+                case shortListType:
                     displayShort(data);
                     break;
-                case "long":
+                case longListType:
                     displayLong(data);
             }
         }

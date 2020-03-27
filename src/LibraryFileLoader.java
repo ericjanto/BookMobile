@@ -1,4 +1,4 @@
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.*;
@@ -12,9 +12,9 @@ public class LibraryFileLoader {
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
     /** Character used to separate data values in file. */
-    private static final char dataSeparator = ',';
+    private static final char DATA_SEPARATOR = ',';
     /** Character used to separate author names. */
-    private static final char authorSeparator = '-';
+    private static final char AUTHOR_SEPARATOR = '-';
 
     /**
      * Contains all lines read from a book data file using
@@ -53,7 +53,7 @@ public class LibraryFileLoader {
      * @return list containing separated data values.
      */
     private ArrayList<String> separateLineContent(String line) {
-        return new ArrayList<>(Arrays.asList(line.split(dataSeparator + "")));
+        return new ArrayList<>(Arrays.asList(line.split(DATA_SEPARATOR + "")));
     }
 
     /**
@@ -74,7 +74,7 @@ public class LibraryFileLoader {
      */
     private String[] getLineAuthors(ArrayList<String> line) {
         int authorIndex = DataOrder.AUTHORS.ordinal();
-        return line.get(authorIndex).split(authorSeparator + "");
+        return line.get(authorIndex).split(AUTHOR_SEPARATOR + "");
     }
 
     /**
@@ -128,12 +128,14 @@ public class LibraryFileLoader {
 
         try {
             fileContent = Files.readAllLines(fileName);
+
             success = true;
         } catch (IOException | SecurityException e) {
             System.err.println("ERROR: Reading file content failed: " + e);
         }
         return success;
     }
+
 
     /**
      * Parse file content loaded previously with the loadFileContent method.
@@ -142,7 +144,7 @@ public class LibraryFileLoader {
      * if no book data has been loaded yet.
      */
     public List<BookEntry> parseFileContent() {
-        ArrayList<BookEntry> bookEntryList = new ArrayList<>();
+        ArrayList<BookEntry> newLibrary = new ArrayList<>();
 
         if (!contentLoaded()) {
             System.err.println("ERROR: No content loaded before parsing.");
@@ -151,13 +153,15 @@ public class LibraryFileLoader {
 
             lineIterator.next(); // Leave out header line in file
 
-            while (lineIterator.hasNext()) {
+            while (lineIterator.hasNext()) { // TODO here is the bottleneck, maybe use regex for parsing the string?
                 ArrayList<String> bookValues = separateLineContent(lineIterator.next());
-                addBook(bookEntryList, bookValues);
+                addBook(newLibrary, bookValues);
+
             }
         }
 
-        return bookEntryList;
+        return newLibrary;
+
     }
 
     /**

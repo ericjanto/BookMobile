@@ -58,7 +58,6 @@ public class AddCmd extends LibraryCommand {
     @Override
     public void execute(LibraryData data) {
         Objects.requireNonNull(data, "Provided library data for AddCmd execution must not be null.");
-
         data.loadData(libraryFilePath);
     }
 }
