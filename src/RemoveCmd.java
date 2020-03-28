@@ -1,6 +1,7 @@
 import java.util.Iterator;
 import java.util.List;
 import java.util.Objects;
+import java.util.StringTokenizer;
 
 import static java.util.Arrays.asList;
 
@@ -11,16 +12,10 @@ public class RemoveCmd extends LibraryCommand {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
-    /** TODO */
-    private static final int AUTHOR_INDEX = "AUTHOR".length();
+    /** Specify what kind of argument is given to remove by. */
+    private RemoveType removeBy;
 
-    /** TODO */
-    private static final int TITLE_INDEX = "TITLE".length();
-
-    /** TODO */
-    private String removeType;
-
-    /** TODO */
+    /** Value to specify which book(s) must be removed. */
     private String removeValue;
 
     // -------------- CONSTRUCTOR(S) ------------------------------------------
@@ -38,59 +33,6 @@ public class RemoveCmd extends LibraryCommand {
     }
 
     // -------------- HELPER METHODS FOR CLASS FUNCTIONALITY METHODS ----------
-
-
-    /**
-     * TODO
-     * @param input command argument input.
-     * @return  true if valid input for remove type TITLE, otherwise false
-     */
-    private boolean parseAuthor(String input) {
-        String potentialType = "";
-        if (input.length() >= AUTHOR_INDEX) {
-            potentialType = input.substring(0, AUTHOR_INDEX);
-        }
-
-        if (potentialType.equals("AUTHOR")) { // TODO Enum for "AUTHOR"
-            removeType = "AUTHOR";
-
-            if (!input.substring(AUTHOR_INDEX).isBlank()) {
-                removeValue = input.substring(AUTHOR_INDEX + 1);
-                return true;
-            } else {
-                return false;
-            }
-
-        } else {
-            return false;
-        }
-    }
-
-    /**
-     * TODO merge with parseAuthor
-     * @param input command argument input.
-     * @return  true if valid input for remove type TITLE, otherwise false
-     */
-    private boolean parseTitle(String input) {
-        String potentialType = "";
-        if (input.length() >= TITLE_INDEX) {
-            potentialType = input.substring(0, TITLE_INDEX);
-        }
-
-        if (potentialType.equals("TITLE")) { // TODO Enum for "TITLE"
-            removeType = "TITLE";
-
-            if (!input.substring(TITLE_INDEX).isBlank()) {
-                removeValue = input.substring(TITLE_INDEX + 1);
-                return true;
-            } else {
-                return false;
-            }
-
-        } else {
-            return false;
-        }
-    }
 
     /**
      * Remove books written by author as specified in class field removeValue.
@@ -136,7 +78,7 @@ public class RemoveCmd extends LibraryCommand {
             String title = bookIterator.next().getTitle();
             if (title.equals(removeValue)) {
                 bookIterator.remove();
-                break;                        // A title appears only once within a library. Can omit rest of iteration.
+                break;                 // Title is unique in library. Can break out of iteration.
             }
         }
 
@@ -152,14 +94,42 @@ public class RemoveCmd extends LibraryCommand {
     // -------------- CLASS FUNCTIONALITY METHODS -----------------------------
 
     /**
-     * Parse given argument input accordingly.
+     * Check for validity of input, i.e. remove type and remove value.
+     * Parse if valid.
      *
      * @param argumentInput argument input for this command.
-     * @return true if valid argument input, otherwise false.
+     * @return true if valid input, otherwise false.
      */
     @Override
     protected boolean parseArguments(String argumentInput) {
-        return parseAuthor(argumentInput) || parseTitle(argumentInput);
+        StringTokenizer inputTokenizer = new StringTokenizer(argumentInput);
+        boolean success = false;
+        String potentialType = "";
+
+        if (inputTokenizer.hasMoreTokens()) {
+            potentialType = inputTokenizer.nextToken();
+        }
+
+        for (RemoveType type : RemoveType.values()) {
+            if (type.name().equals(potentialType) &&        // Condition: Remove type is valid.
+                    inputTokenizer.hasMoreTokens()) {       // Condition: There exists a non-blank remove value.
+                removeBy = type;
+                success = true;
+            }
+        }
+
+        if (success) {
+            StringBuilder removeValueBuilder = new StringBuilder();
+
+            while (inputTokenizer.hasMoreTokens()) {
+                removeValueBuilder.append(inputTokenizer.nextToken());
+                removeValueBuilder.append(" ");
+            }
+
+            removeValue = removeValueBuilder.toString().trim();
+        }
+
+        return success;
     }
 
     /**
@@ -171,11 +141,11 @@ public class RemoveCmd extends LibraryCommand {
     public void execute(LibraryData data) {
         Objects.requireNonNull(data, "Provided library data for RemoveCmd must not be null.");
 
-        switch (removeType) {
-            case "AUTHOR" :
+        switch (removeBy) {
+            case AUTHOR:
                 removeByAuthor(data);
                 break;
-            case "TITLE":
+            case TITLE:
                 removeByTitle(data);
         }
     }

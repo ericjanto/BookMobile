@@ -31,8 +31,8 @@ public class AddCmd extends LibraryCommand {
     // -------------- CLASS FUNCTIONALITY METHODS -----------------------------
 
     /**
-     * Check for validity of input, i.e. file type,
-     * and parse if valid.
+     * Check for validity of input, i.e. file type.
+     * Parse if valid.
      *
      * @param argumentInput argument input for this command.
      * @return true if valid input, otherwise false.
