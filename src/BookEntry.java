@@ -60,47 +60,13 @@ public final class BookEntry {
      * @param pages represents number of pages of a book.
      */
     private static void checkEntries(String title, String[] authors, float rating, String ISBN, int pages) {
-        checkTitle(title);
-        checkAuthors(authors);
+        Objects.requireNonNull(title, "Given title must not be null.");
+        Objects.requireNonNull(authors, "Given author array must not be null.");
         checkRating(rating);
-        checkISBN(ISBN);
+        Objects.requireNonNull(ISBN, "Given ISBN must not be null.");
         checkPages(pages);
     }
 
-    /**
-     * Checks validity of title.
-     * Expected to be neither null nor empty.
-     *
-     * @param title represents title of a book.
-     * @throws NullPointerException if title points to null.
-     * @throws IllegalArgumentException if title is empty.
-     */
-    private static void checkTitle(String title) {
-        Objects.requireNonNull(title, "Given title must not be null.");
-
-        if (title.isBlank()) {
-            throw new IllegalArgumentException("Given title must not be empty.");
-        }
-    }
-
-    /**
-     * Checks validity of authors array.
-     * No instance must be null or empty.
-     *
-     * @param authors represents author(s) of a book.
-     * @throws NullPointerException if an array instance points to null.
-     */
-    private static void checkAuthors(String[] authors) {
-        Objects.requireNonNull(authors, "Given author array must not be null.");
-
-        for (String author : authors) {
-            Objects.requireNonNull(author, "Given author instance in author array must not be null.");
-
-            if (author.isBlank()) {
-                throw new IllegalArgumentException("Given author instance in author array must not be empty.");
-            }
-        }
-    }
 
     /**
      * Checks that rating is between {@value #MIN_RATING} and {@value #MAX_RATING}.
@@ -109,27 +75,8 @@ public final class BookEntry {
      * @throws IllegalArgumentException if rating is out of bound.
      */
     private static void checkRating(float rating) {
-        String errorMessage = String.format("Given rating must be between %.2f and %.2f inclusive, but is: %.2f",
-                MIN_RATING, MAX_RATING, rating);
-
         if (rating < MIN_RATING || rating > MAX_RATING) {
-            throw new IllegalArgumentException(errorMessage);
-        }
-    }
-
-    /**
-     * Check validity of ISBN.
-     * Expected to be neither null nor empty.
-     *
-     * @param ISBN represents ISBN of a book.
-     * @throws NullPointerException if ISBN points to null.
-     * @throws IllegalArgumentException if ISBN is empty.
-     */
-    private static void checkISBN(String ISBN) {
-        Objects.requireNonNull(ISBN, "Given ISBN must not be null.");
-
-        if (ISBN.isBlank()) {
-            throw new IllegalArgumentException("Given ISBN must not be empty.");
+            throw new IllegalArgumentException("Invalid rating: " + rating);
         }
     }
 
@@ -140,11 +87,8 @@ public final class BookEntry {
      * @throws IllegalArgumentException if number of pages is less than {@value #MIN_PAGES}.
      */
     private static void checkPages(int pages) {
-        String errorMessage = String.format("Given number of pages must be equal or greater than %d, but is: %d ",
-                MIN_PAGES, pages);
-
         if (pages < MIN_PAGES) {
-            throw new IllegalArgumentException(errorMessage);
+            throw new IllegalArgumentException("Invalid page number: " + pages);
         }
     }
 

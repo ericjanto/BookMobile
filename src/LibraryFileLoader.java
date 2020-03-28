@@ -1,3 +1,4 @@
+import java.awt.print.Book;
 import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -150,18 +151,15 @@ public class LibraryFileLoader {
             System.err.println("ERROR: No content loaded before parsing.");
         } else {
             Iterator<String> lineIterator = fileContent.iterator();
-
             lineIterator.next(); // Leave out header line in file
 
-            while (lineIterator.hasNext()) { // TODO here is the bottleneck, maybe use regex for parsing the string?
+            while (lineIterator.hasNext()) {
                 ArrayList<String> bookValues = separateLineContent(lineIterator.next());
                 addBook(newLibrary, bookValues);
-
             }
         }
 
         return newLibrary;
-
     }
 
     /**
