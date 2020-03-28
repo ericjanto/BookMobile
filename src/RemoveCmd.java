@@ -13,7 +13,7 @@ public class RemoveCmd extends LibraryCommand {
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
     /** Specify what kind of argument is given to remove by. */
-    private RemoveType removeBy;
+    private ExecutionType removeBy;
 
     /** Value to specify which book(s) must be removed. */
     private String removeValue;
@@ -22,10 +22,10 @@ public class RemoveCmd extends LibraryCommand {
 
     /**
      * Create a remove command.
-     * Input is expected to be TITLE | AUTHOR followed by a non-blank string.
+     * Input is expected to be TITLE or AUTHOR followed by a non-blank string.
      *
      * @param argumentInput command argument input.
-     * @throws IllegalArgumentException if given arguments are invalid.
+     * @throws IllegalArgumentException if given argumentInput is invalid.
      * @throws NullPointerException if the given argumentInput is null.
      */
     public RemoveCmd(String argumentInput) {
@@ -39,7 +39,7 @@ public class RemoveCmd extends LibraryCommand {
      *
      * @param data library data containing book entries.
      */
-    private void removeByAuthor(LibraryData data) {
+    private void removeByAuthor(LibraryData data) { // TODO possible to merge with removeByTitle? -> piazza?
         List<BookEntry> books = data.getBookData();
         Iterator<BookEntry> bookIterator = books.iterator();
         int originalSize = books.size();
@@ -76,6 +76,7 @@ public class RemoveCmd extends LibraryCommand {
 
         while (bookIterator.hasNext()) {
             String title = bookIterator.next().getTitle();
+
             if (title.equals(removeValue)) {
                 bookIterator.remove();
                 break;                 // Title is unique in library. Can break out of iteration.
@@ -110,7 +111,7 @@ public class RemoveCmd extends LibraryCommand {
             potentialType = inputTokenizer.nextToken();
         }
 
-        for (RemoveType type : RemoveType.values()) {
+        for (ExecutionType type : ExecutionType.values()) {
             if (type.name().equals(potentialType) &&        // Condition: Remove type is valid.
                     inputTokenizer.hasMoreTokens()) {       // Condition: There exists a non-blank remove value.
                 removeBy = type;
@@ -126,7 +127,7 @@ public class RemoveCmd extends LibraryCommand {
                 removeValueBuilder.append(" ");
             }
 
-            removeValue = removeValueBuilder.toString().trim();
+            removeValue = removeValueBuilder.toString().stripTrailing();
         }
 
         return success;
@@ -136,6 +137,7 @@ public class RemoveCmd extends LibraryCommand {
      * Execute remove command.
      *
      * @param data library data containing book entries.
+     * @throws NullPointerException if given data is null.
      */
     @Override
     public void execute(LibraryData data) {

@@ -9,7 +9,7 @@ public class ListCmd extends LibraryCommand {
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
     /** Specifies command argument for displaying a short list. */
-    private static final String shortListType = "short";
+    private static final String shortListType = "short"; // TODO enum instead bro
     /** Specifies command argument for displaying a long list. */
     private static final String longListType = "long";
 
@@ -114,7 +114,7 @@ public class ListCmd extends LibraryCommand {
         Objects.requireNonNull(data, "Provided library data for ListCmd execution must not be null.");
 
         if (listHeader(data)) {
-            switch (listType) {
+            switch (listType) { // TODO enum instead
                 case "":
                 case shortListType:
                     displayShort(data);
