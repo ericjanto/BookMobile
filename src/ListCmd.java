@@ -1,17 +1,15 @@
 import java.util.List;
 import java.util.Objects;
 
-/**
- * List command used to display all books in library.
- */
+/** List command used to display all books in library. */
 public class ListCmd extends LibraryCommand {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
 
     /** Specifies command argument for displaying a short list. */
-    private static final String shortListType = "short"; // TODO enum instead bro
+    private static final String SHORT_LIST_TYPE = "short";
     /** Specifies command argument for displaying a long list. */
-    private static final String longListType = "long";
+    private static final String LONG_LIST_TYPE = "long";
 
     /** Type of list to display. */
     private String listType;
@@ -23,6 +21,7 @@ public class ListCmd extends LibraryCommand {
      *
      * @param argumentInput is expected to be either "short", "long", or blank.
      * @throws IllegalArgumentException if given argument is invalid.
+     * @throws NullPointerException if given argument is null.
      */
     public ListCmd(String argumentInput) {
         super(CommandType.LIST, argumentInput);
@@ -86,20 +85,23 @@ public class ListCmd extends LibraryCommand {
 
     /**
      * Check for validity of input and remember it in class field if valid.
-     * Is expected to be either "short", "long", or blank.
+     *
+     * Input is expected to equal either {@value SHORT_LIST_TYPE} or {@value LONG_LIST_TYPE},
+     * or be entirely blank.
      *
      * @param argumentInput argument input for this command.
      * @return true if valid input, otherwise false.
      */
     @Override
     protected boolean parseArguments(String argumentInput) {
-        if (shortListType.equals(argumentInput) || longListType.equals(argumentInput) ||
-                argumentInput.isBlank()) {
-            listType = argumentInput;
+        if (argumentInput.equals(SHORT_LIST_TYPE) || argumentInput.isBlank()) {
+            listType = SHORT_LIST_TYPE;
             return true;
-        } else {
-            return false;
+        } else if (argumentInput.equals(LONG_LIST_TYPE)) {
+            listType = LONG_LIST_TYPE;
+            return true;
         }
+        return false;
     }
 
     /**
@@ -114,12 +116,11 @@ public class ListCmd extends LibraryCommand {
         Objects.requireNonNull(data, "Provided library data for ListCmd execution must not be null.");
 
         if (listHeader(data)) {
-            switch (listType) { // TODO enum instead
-                case "":
-                case shortListType:
+            switch (listType) {
+                case SHORT_LIST_TYPE:
                     displayShort(data);
                     break;
-                case longListType:
+                case LONG_LIST_TYPE:
                     displayLong(data);
             }
         }

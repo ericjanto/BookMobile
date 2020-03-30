@@ -1,10 +1,13 @@
-import java.awt.print.Book;
-import java.io.*;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Objects;
 
-/** 
+/**
  * Class responsible for loading
  * book data from file.
  */
@@ -119,9 +122,9 @@ public class LibraryFileLoader {
      * This method has to be called before the parseFileContent method
      * can be executed successfully.
      * 
-     * @param fileName file path with book data
-     * @return true if book data could be loaded successfully, false otherwise
-     * @throws NullPointerException if the given file name is null
+     * @param fileName file path with book data.
+     * @return true if book data could be loaded successfully, false otherwise.
+     * @throws NullPointerException if the given file name is null.
      */
     public boolean loadFileContent(Path fileName) {
         Objects.requireNonNull(fileName, "Given filename must not be null.");
@@ -176,6 +179,10 @@ public class LibraryFileLoader {
         String ISBN = getLineISBN(bookValues);
         int pages = getLinePages(bookValues);
 
-        library.add(new BookEntry(title, authors, rating, ISBN, pages));
+        try {               // prevents program from crashing when invalid book data is given
+            library.add(new BookEntry(title, authors, rating, ISBN, pages));
+        } catch (IllegalArgumentException e) {
+            System.err.println("Illegal argument for book: " + title + ": " + e);
+        }
     }
 }

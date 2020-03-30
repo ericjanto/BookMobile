@@ -27,11 +27,6 @@ public final class CommandFactory { // the final keyword prevents subclassing of
 
         try {
             switch(cmdType) {
-                /* TODO Implement individual commands and comment
-                 * corresponding line back in once you have a class in place
-                 * TODO Lastly, get rid of the unsupported Operation exception.
-                 */
-
                 case HELP: return new HelpCmd(argumentInput);
                 case EXIT: return new ExitCmd(argumentInput);
                 case ADD: return new AddCmd(argumentInput);
@@ -39,8 +34,6 @@ public final class CommandFactory { // the final keyword prevents subclassing of
                 case SEARCH: return new SearchCmd(argumentInput);
                 case REMOVE: return new RemoveCmd(argumentInput);
                 case GROUP: return new GroupCmd(argumentInput);
-                default:
-                    throw new IllegalArgumentException("Command type not supported: " + cmdType);
             }
         } catch (IllegalArgumentException e) {
             System.err.println();

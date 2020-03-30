@@ -5,9 +5,7 @@ import java.util.StringTokenizer;
 
 import static java.util.Arrays.asList;
 
-/**
- * Remove command used to remove books in library by author or title.
- */
+/** Remove command used to remove books in library by author or title. */
 public class RemoveCmd extends LibraryCommand {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
@@ -39,7 +37,7 @@ public class RemoveCmd extends LibraryCommand {
      *
      * @param data library data containing book entries.
      */
-    private void removeByAuthor(LibraryData data) { // TODO possible to merge with removeByTitle? -> piazza?
+    private void removeByAuthor(LibraryData data) {
         List<BookEntry> books = data.getBookData();
         Iterator<BookEntry> bookIterator = books.iterator();
         int originalSize = books.size();
@@ -56,10 +54,10 @@ public class RemoveCmd extends LibraryCommand {
         resultSize = books.size();
 
         if (originalSize == resultSize) {
-            System.out.printf("0 books removed for author: %s", removeValue);
+            System.out.printf("0 books removed for author: %s%n", removeValue);
         } else {
             int bookRmvCount = originalSize - resultSize;
-            System.out.printf("%d books removed for author: %s", bookRmvCount, removeValue);
+            System.out.printf("%d books removed for author: %s%n", bookRmvCount, removeValue);
         }
     }
 
@@ -86,9 +84,9 @@ public class RemoveCmd extends LibraryCommand {
         resultSize = books.size();
 
         if (originalSize == resultSize) {
-            System.out.printf("%s: not found.", removeValue);
+            System.out.printf("%s: not found.%n", removeValue);
         } else {
-            System.out.printf("%s: removed successfully.", removeValue);
+            System.out.printf("%s: removed successfully.%n", removeValue);
         }
     }
 
@@ -113,7 +111,7 @@ public class RemoveCmd extends LibraryCommand {
 
         for (ExecutionType type : ExecutionType.values()) {
             if (type.name().equals(potentialType) &&        // Condition: Remove type is valid.
-                    inputTokenizer.hasMoreTokens()) {       // Condition: There exists a non-blank remove value.
+                    inputTokenizer.hasMoreTokens()) {       // Condition: There follows a non-blank remove value.
                 removeBy = type;
                 success = true;
             }

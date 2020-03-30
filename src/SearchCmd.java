@@ -2,9 +2,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * Search command used to search for book titles in library.
- */
+/** Search command used to search for book titles in library. */
 public class SearchCmd extends LibraryCommand {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
@@ -19,6 +17,7 @@ public class SearchCmd extends LibraryCommand {
      *
      * @param argumentInput argument input for this command.
      * @throws IllegalArgumentException if given argument is invalid.
+     * @throws NullPointerException if given argument is null.
      */
     public SearchCmd(String argumentInput) {
         super(CommandType.SEARCH, argumentInput);

@@ -2,9 +2,7 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Objects;
 
-/**
- * Add command used to add books to library database.
- */
+/** Add command used to add books to library database. */
 public class AddCmd extends LibraryCommand {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
@@ -50,7 +48,7 @@ public class AddCmd extends LibraryCommand {
 
     /**
      * Execute the add command.
-     * Calls method to load data from file.
+     * Call method to load data from file.
      *
      * @param data book data to be considered for command execution.
      * @throws NullPointerException if given data is null.

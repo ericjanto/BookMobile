@@ -1,9 +1,7 @@
 import java.util.Objects;
 import java.util.Arrays;
 
-/**
- * Immutable class encapsulating data for a single book entry.
- */
+/** Immutable class encapsulating data for a single book entry. */
 public final class BookEntry {
 
     // -------------- CONSTANTS AND FIELDS ------------------------------------
@@ -29,7 +27,7 @@ public final class BookEntry {
     // -------------- CONSTRUCTOR(S) ------------------------------------------
 
     /**
-     * Constructor for BookEntry.java class.
+     * Create a book entry.
      * Initialises class fields.
      *
      * @param title title of the book.
@@ -173,8 +171,8 @@ public final class BookEntry {
     /**
      * Compare parameter object to this BookEntry instance in terms of equality.
      *
-     * @param obj object to be this compared to.
-     * @return true if @param obj is equal to THIS instance, otherwise false.
+     * @param obj object to be compared to this instance.
+     * @return true if object is equal to this instance, otherwise false.
      */
     @Override
     public boolean equals(Object obj) {

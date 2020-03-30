@@ -59,7 +59,7 @@ public class GroupCmd extends LibraryCommand {
      * Create for each letter an entry with respective letter as key
      * and an initialised list within titles can be grouped.
      *
-     * An additional entry for titles starting with a number.
+     * An additional entry for titles which are starting with a number.
      *
      * @return initialised letter map.
      */
@@ -89,7 +89,7 @@ public class GroupCmd extends LibraryCommand {
             ArrayList<String> letterGroup;
             char firstLetter = title.charAt(0);
 
-            if (!Character.isLetter(firstLetter)) {
+            if (Character.isDigit(firstLetter)) {
                 letterGroup = letterMap.get(NUMBER_TITLE_KEY);
             } else {
                 letterGroup = letterMap.get(Character.toUpperCase(firstLetter));
