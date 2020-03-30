@@ -5,180 +5,78 @@
 > Project build entirely in Java to read books from csv-files into a library,
 > featuring several functions to maintain the library.
 
-[![Build Status](https://github.com/ericjanto/Library_Database_Project)](https://travis-ci.org/doge/wow)
-[![Dependency Status](http://img.shields.io/gemnasium/doge/wow.svg)](https://gemnasium.com/doge/wow)
-[![Coverage Status](http://img.shields.io/coveralls/doge/wow.svg)](https://coveralls.io/r/doge/wow)
-[![Code Climate](http://img.shields.io/codeclimate/github/doge/wow.svg)](https://codeclimate.com/github/doge/wow)
-[![Gem Version](http://img.shields.io/gem/v/suchgem.svg)](https://rubygems.org/gems/suchgem)
-[![License](http://img.shields.io/:license-mit-blue.svg)](http://doge.mit-license.org)
-[![Badges](http://img.shields.io/:badges-7/7-ff6799.svg)](https://github.com/badges/badgerbadgerbadger)
 
-- For more on these wonderful ~~badgers~~ badges, refer to <a href="http://badges.github.io/badgerbadgerbadger/" target="_blank">`badgerbadgerbadger`</a>.
+## Table of Contents
 
-***INSERT ANOTHER GRAPHIC HERE***
-
-[![INSERT YOUR GRAPHIC HERE](http://i.imgur.com/dt8AUb6.png)]()
-
-- Most people will glance at your `README`, *maybe* star it, and leave
-- Ergo, people should understand instantly what your project is about based on your repo
-
-> Tips
-
-- HAVE WHITE SPACE
-- MAKE IT PRETTY
-- GIFS ARE REALLY COOL
-
-> GIF Tools
-
-- Use <a href="http://recordit.co/" target="_blank">**Recordit**</a> to create quicks screencasts of your desktop and export them as `GIF`s.
-- For terminal sessions, there's <a href="https://github.com/chjj/ttystudio" target="_blank">**ttystudio**</a> which also supports exporting `GIF`s.
-
-**Recordit**
-
-![Recordit GIF](http://g.recordit.co/iLN6A0vSD8.gif)
-
-**ttystudio**
-
-![ttystudio GIF](https://raw.githubusercontent.com/chjj/ttystudio/master/img/example.gif)
-
----
-
-## Table of Contents (Optional)
-
-> If your `README` has a lot of info, section headers might be nice.
-
-- [Installation](#installation)
+- [Potential&nbsp;"Beyond&nbsp;Expectations"&nbsp;Aspects](#potential&nbsp;"beyond&nbsp;expectations"&nbsp;aspects)
+- [Limitations](#limitations)
 - [Features](#features)
-- [Contributing](#contributing)
-- [Team](#team)
-- [FAQ](#faq)
-- [Support](#support)
-- [License](#license)
+- [General Class Structure](#general&nbsp;class&nbsp;structure)
+## Potential "Beyond Expectations" Aspects
+- Use of Enums for parsing (<tt>GroupCmd</tt> & <tt>RemoveCmd</tt>) enhances loose coupling and type safety.
+- Use of Enums for data order (used in <tt>LibraryFileLoader</tt>) in which information appears in .csv-file enables easy code modification, should the order change or should additional book information be added in future.
+- Use of TreeMap to ensure order of AUTHOR groups
+- Provided JavaDoc documentation
+- Provided ReadMe (not in a usual project layout though, since this is a private project and not supposed to be used by the public)
+- Use of version control (GitHub) (repository link cannot be published here since it would reveal the student's identity)
 
 
----
 
-## Example (Optional)
+## Limitations
+- No author information added, usually that would be done in class comments
+- No use of other packages than the default package -> a sufficient approach would have been to put every class which is related to one command / feature in its own package
+- No use of functional programming constucts, they would make some code better readable, for instance:
 
-```javascript
-// code away!
 
-let generateProject = project => {
-  let code = [];
-  for (let js = 0; js < project.length; js++) {
-    code.push(js);
-  }
-};
+```java
+// Rather clumsy code
+
+while (entryIterator.hasNext()) {
+   Map.Entry<Character, ArrayList<String>> entry = entryIterator.next();
+
+   if (entry.getValue().isEmpty()) {
+       entryIterator.remove();
+   }
+}
+
+// Clean code
+
+letterMap.entrySet().removeIf(entry -> entry.getValue().isEmpty());
 ```
-
----
-
-## Installation
-
-- All the `code` required to get started
-- Images of what it should look like
-
-### Clone
-
-- Clone this repo to your local machine using `https://github.com/fvcproductions/SOMEREPO`
-
-### Setup
-
-- If you want more syntax highlighting, format your code like this:
-
-> update and install this package first
-
-```shell
-$ brew update
-$ brew install fvcproductions
-```
-
-> now install npm and bower packages
-
-```shell
-$ npm install
-$ bower install
-```
-
-- For all the possible languages that support syntax highlithing on GitHub (which is basically all of them), refer <a href="https://github.com/github/linguist/blob/master/lib/linguist/languages.yml" target="_blank">here</a>.
-
----
 
 ## Features
-## Usage (Optional)
-## Documentation (Optional)
-## Tests (Optional)
 
-- Going into more detail on code and technologies used
-- I utilized this nifty <a href="https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet" target="_blank">Markdown Cheatsheet</a> for this sample `README`.
+***ADD Command***
+- Use this command to add books to your library.
+- Type *ADD* followed by a valid path to a csv-file
 
----
+***EXIT Command***
+- Use this command to terminate the program
 
-## Contributing
+***LIST Command***
+- Use this command to display your library
+- Type *LIST* followed by either *short* or *long*
+- *short* lists only book titles
+- *long* lists all book information
 
-> To get started...
+***GROUP Command***
+- Use this command as a variant to the LIST command
+- Type *GROUP* followed by either *TITLE* or *AUTHOR*
+- *TITLE* displays your library in title groups
+- *AUTHOR* displays your library in author groups
 
-### Step 1
+***REMOVE Command***
+- Use this command to remove books from the library
+- Type *REMOVE* followed by *AUTHOR* or *TITLE*
+- *AUTHOR* followed by the author removes all their books
+- *TITLE* followed by the title removes the respective book
 
-- **Option 1**
-    - 🍴 Fork this repo!
+***HELP Command***
+- Display a user manual
 
-- **Option 2**
-    - 👯 Clone this repo to your local machine using `https://github.com/joanaz/HireDot2.git`
-
-### Step 2
-
-- **HACK AWAY!** 🔨🔨🔨
-
-### Step 3
-
-- 🔃 Create a new pull request using <a href="https://github.com/joanaz/HireDot2/compare/" target="_blank">`https://github.com/joanaz/HireDot2/compare/`</a>.
-
----
-
-## Team
-
-> Or Contributors/People
-
-| <a href="http://fvcproductions.com" target="_blank">**FVCproductions**</a> | <a href="http://fvcproductions.com" target="_blank">**FVCproductions**</a> | <a href="http://fvcproductions.com" target="_blank">**FVCproductions**</a> |
-| :---: |:---:| :---:|
-| [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com)    | [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com) | [![FVCproductions](https://avatars1.githubusercontent.com/u/4284691?v=3&s=200)](http://fvcproductions.com)  |
-| <a href="http://github.com/fvcproductions" target="_blank">`github.com/fvcproductions`</a> | <a href="http://github.com/fvcproductions" target="_blank">`github.com/fvcproductions`</a> | <a href="http://github.com/fvcproductions" target="_blank">`github.com/fvcproductions`</a> |
-
-- You can just grab their GitHub profile image URL
-- You should probably resize their picture using `?s=200` at the end of the image URL.
-
----
-
-## FAQ
-
-- **How do I do *specifically* so and so?**
-    - No problem! Just do this.
-
----
-
-## Support
-
-Reach out to me at one of the following places!
-
-- Website at <a href="http://fvcproductions.com" target="_blank">`fvcproductions.com`</a>
-- Twitter at <a href="http://twitter.com/fvcproductions" target="_blank">`@fvcproductions`</a>
-- Insert more social links here.
-
----
-
-## Donations (Optional)
-
-- You could include a <a href="https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png" target="_blank">Gratipay</a> link as well.
-
-[![Support via Gratipay](https://cdn.rawgit.com/gratipay/gratipay-badge/2.3.0/dist/gratipay.png)](https://gratipay.com/fvcproductions/)
-
-
----
-
-## License
-
-[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](http://badges.mit-license.org)
-
-- **[MIT license](http://opensource.org/licenses/mit-license.php)**
-- Copyright 2015 © <a href="http://fvcproductions.com" target="_blank">FVCproductions</a>.
+## General Class Structure
+1. Constants and Fields
+2. Constructor(s)
+3. Error Checking
+4. Helper methods (used by explicit methods mentioned in paper)
+5. Class functionality methods (methods explicitly mentioned in paper & core functionality methods)
