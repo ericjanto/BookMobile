@@ -57,7 +57,7 @@ public class GroupCmd extends LibraryCommand {
     /**
      * Initialise letter map.
      * Create for each letter an entry with respective letter as key
-     * and an initialised list within titles can be grouped.
+     * and an initialised list within which titles can be grouped.
      *
      * An additional entry for titles which are starting with a number.
      *

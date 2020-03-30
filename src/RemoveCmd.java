@@ -33,6 +33,21 @@ public class RemoveCmd extends LibraryCommand {
     // -------------- HELPER METHODS FOR CLASS FUNCTIONALITY METHODS ----------
 
     /**
+     * Parse remove value from given standard-tokenized argument input.
+     *
+     * @param inputTokenizer standard-tokenized argument input.
+     */
+    private void parseRemoveValue(StringTokenizer inputTokenizer) {
+        StringBuilder removeValueBuilder = new StringBuilder();
+
+        while (inputTokenizer.hasMoreTokens()) {
+            removeValueBuilder.append(inputTokenizer.nextToken());
+            removeValueBuilder.append(" ");             // final whitespace to be removed with stripTrailing()
+        }
+        removeValue = removeValueBuilder.toString().stripTrailing();
+    }
+    
+    /**
      * Remove books written by author as specified in class field removeValue.
      *
      * @param data library data containing book entries.
@@ -52,7 +67,16 @@ public class RemoveCmd extends LibraryCommand {
         }
 
         resultSize = books.size();
+        printAuthorRemoveResult(originalSize, resultSize);
+    }
 
+    /**
+     * Print message to console in respective to success of removing books of an author.
+     *
+     * @param originalSize library size before remove attempt.
+     * @param resultSize library size after remove attempt.
+     */
+    private void printAuthorRemoveResult(int originalSize, int resultSize) {
         if (originalSize == resultSize) {
             System.out.printf("0 books removed for author: %s%n", removeValue);
         } else {
@@ -77,12 +101,21 @@ public class RemoveCmd extends LibraryCommand {
 
             if (title.equals(removeValue)) {
                 bookIterator.remove();
-                break;                 // Title is unique in library. Can break out of iteration.
+                break;                 // Break of iteration is sufficient: Title is unique in library.
             }
         }
 
         resultSize = books.size();
+        printTitleRemoveResult(originalSize, resultSize);
+    }
 
+    /**
+     * Print message to console in respective to success of title removing a book.
+     *
+     * @param originalSize library size before remove attempt.
+     * @param resultSize library size after remove attempt.
+     */
+    private void printTitleRemoveResult(int originalSize, int resultSize) {
         if (originalSize == resultSize) {
             System.out.printf("%s: not found.%n", removeValue);
         } else {
@@ -102,7 +135,6 @@ public class RemoveCmd extends LibraryCommand {
     @Override
     protected boolean parseArguments(String argumentInput) {
         StringTokenizer inputTokenizer = new StringTokenizer(argumentInput);
-        boolean success = false;
         String potentialType = "";
 
         if (inputTokenizer.hasMoreTokens()) {
@@ -113,22 +145,12 @@ public class RemoveCmd extends LibraryCommand {
             if (type.name().equals(potentialType) &&        // Condition: Remove type is valid.
                     inputTokenizer.hasMoreTokens()) {       // Condition: There follows a non-blank remove value.
                 removeBy = type;
-                success = true;
+                parseRemoveValue(inputTokenizer);
+                return true;
             }
         }
 
-        if (success) {
-            StringBuilder removeValueBuilder = new StringBuilder();
-
-            while (inputTokenizer.hasMoreTokens()) {
-                removeValueBuilder.append(inputTokenizer.nextToken());
-                removeValueBuilder.append(" ");
-            }
-
-            removeValue = removeValueBuilder.toString().stripTrailing();
-        }
-
-        return success;
+        return false;
     }
 
     /**
