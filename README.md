@@ -12,7 +12,7 @@
 - [Limitations](#limitations)
 - [Features](#features)
 - [General Class Structure](#general&nbsp;class&nbsp;structure)
-## Potential "Beyond Expectations" Aspects
+## Language Features
 - Use of Enums for parsing (<tt>GroupCmd</tt> & <tt>RemoveCmd</tt>) enhances loose coupling and type safety.
 - Use of Enums for data order (used in <tt>LibraryFileLoader</tt>) in which information appears in .csv-file enables easy code modification, should the order change or should additional book information be added in future.
 - Use of TreeMap to ensure order of AUTHOR groups
