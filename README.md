@@ -17,10 +17,6 @@
 - Use of Enums for data order (used in <tt>LibraryFileLoader</tt>) in which information appears in .csv-file enables easy code modification, should the order change or should additional book information be added in future.
 - Use of TreeMap to ensure order of AUTHOR groups
 - Provided JavaDoc documentation
-- Provided ReadMe (not in a usual project layout though, since this is a private project and not supposed to be used by the public)
-- Use of version control (GitHub) (repository link cannot be published here since it would reveal the student's identity)
-
-
 
 ## Limitations
 - No author information added, usually that would be done in class comments
