@@ -2,7 +2,7 @@
 
 # Library Database Project
 
-> Project build entirely in Java to read books from csv-files into a library,
+> Project build entirely in Java to read data from csv-files into a library,
 > featuring several functions to maintain the library.
 
 
