@@ -4,6 +4,7 @@
 
 > Project build entirely in Java to read data from csv-files into a library,
 > featuring several functions to maintain the library.
+> Realised for a first year [programming class at uni](http://www.drps.ed.ac.uk/19-20/dpt/cxinfr08029.htm).
 
 
 ## Table of Contents
