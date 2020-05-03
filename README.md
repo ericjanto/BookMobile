@@ -9,7 +9,7 @@
 
 ## Table of Contents
 
-- [Potential&nbsp;"Beyond&nbsp;Expectations"&nbsp;Aspects](#potential&nbsp;"beyond&nbsp;expectations"&nbsp;aspects)
+- [Language&nbsp;Features](#language&nbsp;features&nbsp)
 - [Limitations](#limitations)
 - [Features](#features)
 - [General Class Structure](#general&nbsp;class&nbsp;structure)
