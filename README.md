@@ -12,7 +12,8 @@
 - Use of TreeMap to ensure order of AUTHOR groups
 - Provided JavaDoc documentation
 
-## Limitations
+## Limitations As Given By Instructions
+- No packages allowed
 - No author information added, usually that would be done in class comments
 - No use of other packages than the default package -> a sufficient approach would have been to put every class which is related to one command / feature in its own package
 - No use of functional programming constucts, they would make some code better readable, for instance:
