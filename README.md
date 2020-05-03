@@ -6,13 +6,6 @@
 > featuring several functions to maintain the library.
 > Realised for a first year [programming class at uni](http://www.drps.ed.ac.uk/19-20/dpt/cxinfr08029.htm).
 
-
-## Table of Contents
-
-- [Language&nbsp;Features](#language&nbsp;features&nbsp)
-- [Limitations](#limitations)
-- [Features](#features)
-- [General Class Structure](#general&nbsp;class&nbsp;structure)
 ## Language Features
 - Use of Enums for parsing (<tt>GroupCmd</tt> & <tt>RemoveCmd</tt>) enhances loose coupling and type safety.
 - Use of Enums for data order (used in <tt>LibraryFileLoader</tt>) in which information appears in .csv-file enables easy code modification, should the order change or should additional book information be added in future.
